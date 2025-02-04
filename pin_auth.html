@@ -88,14 +88,17 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            touch-action: manipulation;
         }
 
         .main button.del {
             background-color: #cccccc;
+            touch-action: manipulation;
         }
 
         .main button.x {
             background-color: #cccccc;
+            touch-action: manipulation;
         }
 
         .footer {
@@ -104,22 +107,6 @@
             padding: 30px 10px 30px 20px;
         }
 
-        @media (max-width: 600px) {
-            .main button {
-                width: 50px;
-                height: 50px;
-                font-size: 18px;
-            }
-
-            .header h1 {
-                font-size: 18px;
-            }
-
-            .header .pin-input div {
-                width: 30px;
-                height: 30px;
-            }
-        }
     </style>
 </head>
 <body>
