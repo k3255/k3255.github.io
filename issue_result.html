@@ -141,6 +141,17 @@
         var url = location.origin + '/issue_result';
         history.pushState(state, null, url);
 
+        function getCookieValue(name) {
+            const cookies = document.cookie.split('; ');
+            for (let i = 0; i < cookies.length; i++) {
+                const [key, value] = cookies[i].split('=');
+                if (key === name) return decodeURIComponent(value);
+            }
+            return null;
+        }
+        document.getElementById('user-name').textContent = 
+            (getCookieValue('first_name') || 'User') + ' ' + (getCookieValue('last_name') || '');
+            
         document.getElementById('ok-button').addEventListener('click', function() {
             document.cookie = "vc_result=true; path=/; max-age=3600";
             setPage('main.html');

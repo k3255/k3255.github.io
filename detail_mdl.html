@@ -120,20 +120,19 @@
     <div class="mobile-container">
         <div class="header">
             <div class="top-line">
-                <img src="image/trash.png" alt="User Icon">
+                <img src="image/trash.png" alt="User Icon" id="delete">
             </div>
             <div class="middle-line">
                 <img src="image/vc_profile_img.png" alt="Large Icon">
             </div>
-            <div class="bottom-line">
-                Raon Kim
+            <div class="bottom-line" id="user-name">
             </div>
         </div>
         <div class="main">
             <p>[Family Name]</p>
-            <p>Kim</p>
+            <p id="last-name"></p>
             <p>[Given Name]</p>
-            <p>Raon</p>
+            <p id="first-name"></p>
             <p>[Birth date]</p>
             <p>2024-01-01</p>
             <p>[Address]</p>
@@ -154,6 +153,25 @@
         var state = {};
         var url = location.origin + '/detail_mdl';
         history.pushState(state, null, url);
+
+        function getCookieValue(name) {
+            const cookies = document.cookie.split('; ');
+            for (let i = 0; i < cookies.length; i++) {
+                const [key, value] = cookies[i].split('=');
+                if (key === name) return decodeURIComponent(value);
+            }
+            return null;
+        }
+        document.getElementById('user-name').textContent = 
+        (getCookieValue('first_name') || 'User') + ' ' + (getCookieValue('last_name') || '');
+
+        document.getElementById('first-name').textContent = getCookieValue('first_name');
+
+        document.getElementById('last-name').textContent = getCookieValue('last_name');
+        
+        document.getElementById('delete').addEventListener('click', function() {
+            alert("미지원");
+        });
 
         document.getElementById('ok-button').addEventListener('click', function() {
             setPage('main.html');

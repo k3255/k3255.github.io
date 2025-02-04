@@ -179,7 +179,20 @@
         };
 
         document.getElementById('cancel-button').addEventListener('click', function() {
-            setPage('main.html');
+            const issuerInitForProfile = getCookieValue('issuer_init_for_profile');
+            const userInitForProfile = getCookieValue('user_init_for_profile');
+            const userInit = getCookieValue('user_init');
+            if (issuerInitForProfile === 'true') {
+                document.cookie = "issuer_init_for_profile=false; path=/; max-age=3600";
+                document.cookie = "issuer_init=false; path=/; max-age=3600";
+                setPage('main.html');
+            } else if (userInitForProfile === 'true') {
+                document.cookie = "user_init_for_profile=false; path=/; max-age=3600";
+                if(userInit === 'false')
+                    document.cookie = "user_init=false; path=/; max-age=3600";
+                setPage('main.html');
+            }
+            
         });
 
         document.getElementById('ok-button').addEventListener('click', function() {

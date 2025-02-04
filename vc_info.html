@@ -35,7 +35,7 @@
         }
 
         .input {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         .input p {
@@ -59,7 +59,7 @@
         .error-valid-message {
             color: red;
             font-size: 0.8em;
-            margin-top: 5px;
+            margin-bottom: 15px;
             display: none;
         }
 
@@ -168,7 +168,65 @@
         history.pushState(state, null, url);
 
         document.getElementById('save-button').addEventListener('click', function () {
-            setPage('pin_auth_vc.html');
+
+            let birthDate = document.getElementById('birthDate').value.trim();
+            let address = document.getElementById('address').value.trim();
+            let licenseNumber = document.getElementById('licenseNumber').value.trim();
+            let issueDate = document.getElementById('issueDate').value.trim();
+
+            let birthDateError = document.getElementById('birthDateError');
+            let addressError = document.getElementById('addressError');
+            let licenseNumberError = document.getElementById('licenseNumberError');
+            let issueDateError = document.getElementById('issueDateError');
+
+            birthDateError.textContent = "";
+            addressError.textContent = "";
+            licenseNumberError.textContent = "";
+            issueDateError.textContent = "";
+
+            let hasError = false;
+
+            if (!birthDate) {
+                birthDateError.textContent = "BirthDate is required.";
+                birthDateError.style.display = "block";
+                hasError = true;
+            } else {
+                birthDateError.style.display = "none";
+            }
+
+            if (!address) {
+                addressError.textContent = "Address is required.";
+                addressError.style.display = "block";
+                hasError = true;
+            } else {
+                addressError.style.display = "none";
+            }
+
+            if (!licenseNumber) {
+                licenseNumberError.textContent = "License Number is required.";
+                licenseNumberError.style.display = "block";
+                hasError = true;
+            } else {
+                licenseNumberError.style.display = "none";
+            }
+            
+            if (!issueDate) {
+                issueDateError.textContent = "IssueDate is required.";
+                issueDateError.style.display = "block";
+                hasError = true;
+            } else {
+                issueDateError.style.display = "none";
+            }
+
+            if (!hasError) {
+                document.cookie = "birth_date=" + birthDate + "; path=/; max-age=3600";
+                document.cookie = "address=" + address + "; path=/; max-age=3600";
+                document.cookie = "license_number=" + licenseNumber + "; path=/; max-age=3600";
+                document.cookie = "issue_date=" + issueDate + "; path=/; max-age=3600";
+                document.cookie = "user_init=true; path=/; max-age=3600";
+                setPage('pin_auth_vc.html');
+            }
+
         });
     </script>
   </body>

@@ -120,24 +120,23 @@
     <div class="mobile-container">
         <div class="header">
             <div class="top-line">
-                <img src="image/trash.png" alt="User Icon">
+                <img src="image/trash.png" alt="User Icon" id="delete">
             </div>
             <div class="middle-line">
                 <img src="image/vc_profile_img.png" alt="Large Icon">
             </div>
-            <div class="bottom-line">
-                Raon Kim
+            <div class="bottom-line" id="user-name">
             </div>
         </div>
         <div class="main">
             <p>[Name]</p>
-            <p>Raon Kim</p>
+            <p id="user-name-content"></p>
             <p>[Birth Date]</p>
-            <p>1990-01-01</p>
+            <p id="birth-date-content"></p>
             <p>[Issue Date]</p>
-            <p>2025-01-01</p>
+            <p id="issue-date-content"></p>
             <p>[Address]</p>
-            <p>Korea</p>
+            <p id="address-content"></p>
         </div>
         <div class="button-container">
             <button id="ok-button">CONTINUE</button>
@@ -152,6 +151,28 @@
         var state = {};
         var url = location.origin + '/detail_nid';
         history.pushState(state, null, url);
+
+        function getCookieValue(name) {
+            const cookies = document.cookie.split('; ');
+            for (let i = 0; i < cookies.length; i++) {
+                const [key, value] = cookies[i].split('=');
+                if (key === name) return decodeURIComponent(value);
+            }
+            return null;
+        }
+        document.getElementById('user-name').textContent = 
+            (getCookieValue('first_name') || 'User') + ' ' + (getCookieValue('last_name') || '');
+
+        document.getElementById('user-name-content').textContent = 
+            (getCookieValue('first_name') || 'User') + ' ' + (getCookieValue('last_name') || '');
+
+        document.getElementById('birth-date-content').textContent = getCookieValue('birth_date');
+        document.getElementById('issue-date-content').textContent = getCookieValue('issue_date');
+        document.getElementById('address-content').textContent = getCookieValue('address');
+
+        document.getElementById('delete').addEventListener('click', function() {
+            alert("미지원");
+        });
 
         document.getElementById('ok-button').addEventListener('click', function() {
             setPage('main.html');

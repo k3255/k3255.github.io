@@ -35,7 +35,7 @@
         }
 
         .input {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         .input p {
@@ -59,7 +59,7 @@
         .error-valid-message {
             color: red;
             font-size: 0.8em;
-            margin-top: 5px;
+            margin-bottom: 15px;
             display: none;
         }
 
@@ -131,18 +131,55 @@
         </div>
     </div>
     <script>
-        window.onpopstate = function(e) { 
-            console.log(`${JSON.stringify(e.state)} | ${location.origin} | ${location.pathname}`);
-        }
+        // window.onpopstate = function(e) { 
+        //     console.log(`${JSON.stringify(e.state)} | ${location.origin} | ${location.pathname}`);
+        // }
 
-        var state = {};
-        var url = location.origin + '/user_info';
-        history.pushState(state, null, url);
-
+        // var state = {};
+        // var url = location.origin + '/user_info';
+        // history.pushState(state, null, url);
         document.getElementById('save-button').addEventListener('click', function () {
-            //setPage('lock_popup.html');
-          setPage('lock_popup.html');
+            let firstName = document.getElementById('firstName').value.trim();
+            let lastName = document.getElementById('lastName').value.trim();
+            let firstNameError = document.getElementById('firstNameError');
+            let lastNameError = document.getElementById('lastNameError');
+
+            firstNameError.textContent = "";
+            lastNameError.textContent = "";
+
+            let hasError = false;
+
+            if (!firstName) {
+                firstNameError.textContent = "First Name is required.";
+                firstNameError.style.display = "block";
+                hasError = true;
+            } else {
+                firstNameError.style.display = "none";
+            }
+
+            if (!lastName) {
+                lastNameError.textContent = "Last Name is required.";
+                lastNameError.style.display = "block";
+                hasError = true;
+            } else {
+                lastNameError.style.display = "none";
+            }
+
+            if (!hasError) {
+                document.cookie = "first_name=" + firstName + "; path=/; max-age=3600";
+                document.cookie = "last_name=" + lastName + "; path=/; max-age=3600";
+                setPage('lock_popup.html');
+            }
         });
+        // document.getElementById('save-button').addEventListener('click', function () {
+        //     if(document.getElementById('firstName').value === null) {
+        //         alert("error");
+        //     }
+        //     alert(document.getElementById('firstName').value);
+        //     document.cookie = "first_name=" + document.getElementById('firstName').value + "; path=/; max-age=3600";
+        //     document.cookie = "last_name=" + document.getElementById('lastName').value + "; path=/; max-age=3600";
+        //     window.location.href = 'index.html';
+        // });
     </script>
   </body>
 </html>
