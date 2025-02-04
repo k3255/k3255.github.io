@@ -189,8 +189,12 @@
             document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
         }
 
+        let isProcessing = false;
+
         buttons.forEach(button => {
             button.addEventListener('click', () => {
+                if (isProcessing) return;
+
                 if (button.classList.contains('del')) {
                     if (pinIndex > 0) {
                         pinInput[--pinIndex].textContent = '';
@@ -215,36 +219,41 @@
                     }
 
                     if (pinIndex === 6) {
-                        if (!storedPin) {
-                            setCookie('userPin', pinValue, 1);
-                            storedPin = pinValue;
-                            title.textContent = 'Please input a PIN';
-                            setTimeout(() => {
-                                pinInput.forEach(pin => {
-                                    pin.textContent = '';
-                                    pin.style.borderBottom = '2px solid #aaaaaa';
-                                });
-                                pinIndex = 0;
-                                pinValue = "";
-                            }, 500);
-                        } else {
-                            if (pinValue === storedPin) {
-                                setPage('finger_popup.html');
-                            } else {
-                                title.textContent = 'PIN does not match';
-                                deleteCookie('userPin');
-                                storedPin = "";
+                        isProcessing = true;
+                        setTimeout(() => {
+                            if (!storedPin) {
+                                setCookie('userPin', pinValue, 1);
+                                storedPin = pinValue;
+                                title.textContent = 'Please input a PIN';
                                 setTimeout(() => {
-                                    title.textContent = 'Please register a PIN';
                                     pinInput.forEach(pin => {
                                         pin.textContent = '';
                                         pin.style.borderBottom = '2px solid #aaaaaa';
                                     });
                                     pinIndex = 0;
                                     pinValue = "";
+                                    isProcessing = false;
                                 }, 500);
+                            } else {
+                                if (pinValue === storedPin) {
+                                    setPage('finger_popup.html');
+                                } else {
+                                    title.textContent = 'PIN does not match';
+                                    deleteCookie('userPin');
+                                    storedPin = "";
+                                    setTimeout(() => {
+                                        title.textContent = 'Please register a PIN';
+                                        pinInput.forEach(pin => {
+                                            pin.textContent = '';
+                                            pin.style.borderBottom = '2px solid #aaaaaa';
+                                        });
+                                        pinIndex = 0;
+                                        pinValue = "";
+                                        isProcessing = false;
+                                    }, 500);
+                                }
                             }
-                        }
+                        }, 300);
                     }
                 }
             });
